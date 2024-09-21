@@ -1,4 +1,4 @@
-package com.btg.fondos;
+package com.btg.pactual;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
