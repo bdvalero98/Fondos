@@ -13,11 +13,6 @@ public class InscripcionService {
     @Autowired
     private InscripcionRepository inscripcionRepository;
 
-    @Autowired
-    private ClienteService clienteService;
-
-
-
     public Inscripcion suscribirCliente(Inscripcion inscripcion) {
         return inscripcionRepository.save(inscripcion);
     }
@@ -27,7 +22,7 @@ public class InscripcionService {
     }
 
     public List<Inscripcion> obtenerInscripcionesPorCliente(String clienteId) {
-        return inscripcionRepository.findByClienteId(clienteId);
+        return inscripcionRepository.findByClientId(clienteId);
     }
 
     public List<Inscripcion> obtenerInscripcionesActivas(String clienteId) {

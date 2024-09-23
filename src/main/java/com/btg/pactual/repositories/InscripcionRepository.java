@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface InscripcionRepository extends MongoRepository<Inscripcion, String> {
-    List<Inscripcion> findByClienteId(String clienteId);
+    List<Inscripcion> findByClientId(String clienteId);
 
     List<Inscripcion> findActivasPorCliente(String clienteId);
 }

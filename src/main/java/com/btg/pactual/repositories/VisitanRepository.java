@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface VisitanRepository extends MongoRepository<Visitan, String> {
-    List<Visitan> findBySucursalId(String sucursalId);
+    List<Visitan> findBySucursalPorId(String sucursalId);
 
-    List<Visitan> findByClienteId(String clienteId);
+    List<Visitan> findByClientePorId(String clienteId);
 }
