@@ -1,4 +1,4 @@
-package com.btg.fondos;
+package com.btg.pactual;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
