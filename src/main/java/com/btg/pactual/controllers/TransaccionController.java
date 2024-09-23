@@ -1,6 +1,7 @@
 package com.btg.pactual.controllers;
 
 import com.btg.pactual.domain.models.Cliente;
+import com.btg.pactual.domain.models.Producto;
 import com.btg.pactual.domain.models.Transaccion;
 import com.btg.pactual.services.TransaccionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,9 @@ public class TransaccionController {
     @PostMapping("/registrar")
     public ResponseEntity<Transaccion> registrarTransaccion(@RequestParam Cliente cliente,
                                                             @RequestParam Double monto,
-                                                            @RequestParam String tipo) {
-        Transaccion transaccion = transaccionService.registrarTransaccion(cliente, tipo, monto);
+                                                            @RequestParam String tipo,
+                                                            @RequestBody Producto producto) {
+        Transaccion transaccion = transaccionService.registrarTransaccion(cliente, producto, tipo, monto);
         return ResponseEntity.ok(transaccion);
     }
 

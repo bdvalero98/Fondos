@@ -35,7 +35,7 @@ public class InscripcionService {
     public void cancelarInscripcion(String inscripcionId) {
         Optional<Inscripcion> inscripcionOptional = inscripcionRepository.findById(inscripcionId);
 
-        if (!inscripcionOptional.isPresent()) {
+        if (inscripcionOptional.isEmpty()) {
             throw new RuntimeException("Inscripcion no encontrada con el ID: " + inscripcionId);
         }
 
