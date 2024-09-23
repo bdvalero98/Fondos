@@ -1,7 +1,7 @@
-package com.btg.pactual.application.services;
+package com.btg.pactual.services;
 
 import com.btg.pactual.domain.models.Inscripcion;
-import com.btg.pactual.domain.repositories.InscripcionRepository;
+import com.btg.pactual.repositories.InscripcionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +12,11 @@ public class InscripcionService {
 
     @Autowired
     private InscripcionRepository inscripcionRepository;
+
+    @Autowired
+    private ClienteService clienteService;
+
+
 
     public Inscripcion suscribirCliente(Inscripcion inscripcion) {
         return inscripcionRepository.save(inscripcion);

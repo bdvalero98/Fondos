@@ -1,6 +1,6 @@
 package com.btg.pactual.controllers;
 
-import com.btg.pactual.application.services.InscripcionService;
+import com.btg.pactual.services.InscripcionService;
 import com.btg.pactual.domain.models.Inscripcion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

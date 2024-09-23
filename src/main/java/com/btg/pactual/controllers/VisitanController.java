@@ -1,6 +1,6 @@
 package com.btg.pactual.controllers;
 
-import com.btg.pactual.application.services.VisitanService;
+import com.btg.pactual.services.VisitanService;
 import com.btg.pactual.domain.models.Visitan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

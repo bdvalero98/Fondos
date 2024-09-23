@@ -1,7 +1,7 @@
-package com.btg.pactual.application.services;
+package com.btg.pactual.services;
 
 import com.btg.pactual.domain.models.Visitan;
-import com.btg.pactual.domain.repositories.VisitanRepository;
+import com.btg.pactual.repositories.VisitanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

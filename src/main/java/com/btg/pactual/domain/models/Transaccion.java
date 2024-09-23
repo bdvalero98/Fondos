@@ -7,26 +7,23 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "cliente")
-public class Cliente {
+@Document(collection = "transaccion")
+public class Transaccion {
 
     @Id
-    private String idCliente;
-    private String nombre;
-    private String apellido;
-    private String ciudad;
+    private String idTransaccion;
 
     @DBRef
-    private List<Inscripcion> inscripciones;
+    private Cliente cliente;
 
-    @DBRef
-    private List<Visitan> visitas;
+    private String tipoTransaccion;
+    private Double monto;
+    private LocalDateTime fecha;
 
-    @DBRef
-    private List<Transaccion> transacciones;
+
 }

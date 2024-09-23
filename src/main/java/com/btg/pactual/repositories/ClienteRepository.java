@@ -1,4 +1,4 @@
-package com.btg.pactual.domain.repositories;
+package com.btg.pactual.repositories;
 
 import com.btg.pactual.domain.models.Cliente;
 import org.springframework.data.mongodb.repository.MongoRepository;
