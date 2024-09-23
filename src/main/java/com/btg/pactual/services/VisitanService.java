@@ -18,10 +18,10 @@ public class VisitanService {
     }
 
     public List<Visitan> obtenerVisitasPorSucursal(String sucursalId) {
-        return visitanRepository.findBySucursalId(sucursalId);
+        return visitanRepository.findBySucursalPorId(sucursalId);
     }
 
     public List<Visitan> obtenerVisitasPorCliente(String clienteId) {
-        return visitanRepository.findByClienteId(clienteId);
+        return visitanRepository.findByClientePorId(clienteId);
     }
 }
