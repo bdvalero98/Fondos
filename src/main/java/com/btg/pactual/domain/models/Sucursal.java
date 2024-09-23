@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,7 +15,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Sucursal {
 
     @Id
-    private String id;
+    private String idSucursal;
     private String nombre;
     private String ciudad;
+
+    private List<Producto> productos;
 }

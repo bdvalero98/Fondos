@@ -1,34 +1,36 @@
 package com.btg.pactual.application.services;
 
 import com.btg.pactual.domain.models.Cliente;
+import com.btg.pactual.domain.models.Inscripcion;
 import com.btg.pactual.domain.repositories.ClienteRepository;
-import lombok.RequiredArgsConstructor;
+import com.btg.pactual.domain.repositories.InscripcionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public List<Cliente> findAll() {
-        return clienteRepository.findAll();
-    }
+    @Autowired
+    private InscripcionRepository inscripcionRepository;
 
-    public Optional<Cliente> findById(String id) {
-        return clienteRepository.findById(id);
-    }
-
-    public Cliente save(Cliente cliente) {
+    public Cliente crearCliente(Cliente cliente) {
         return clienteRepository.save(cliente);
     }
 
-    public void deleteById(String id) {
-        clienteRepository.deleteById(id);
+    public Cliente obtenerClientePorId(String idCliente) {
+        return clienteRepository.findById(idCliente).orElse(null);
+    }
+
+    public List<Cliente> obtenerClientes() {
+        return clienteRepository.findAll();
+    }
+
+    public List<Inscripcion> obtenerHistorialInscripciones(String clienteId) {
+        return inscripcionRepository.findByClienteId(clienteId);
     }
 }

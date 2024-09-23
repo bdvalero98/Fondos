@@ -14,11 +14,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Inscripcion {
 
     @Id
-    private String id;
-
-    @DBRef
-    private Producto producto;
+    private String idInscripcion;
 
     @DBRef
     private Cliente cliente;
+
+    @DBRef
+    private Producto producto;
 }

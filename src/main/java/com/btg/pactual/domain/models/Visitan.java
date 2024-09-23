@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -16,13 +16,14 @@ import java.util.Date;
 public class Visitan {
 
     @Id
-    private String id;
-
-    @DBRef
-    private Sucursal sucursal;
+    private String idVisitan;
 
     @DBRef
     private Cliente cliente;
 
-    private Date fechaVisita;
+    @DBRef
+    private Sucursal sucursal;
+
+    private LocalDate fechaVisita;
+
 }

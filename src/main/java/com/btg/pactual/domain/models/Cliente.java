@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -13,8 +16,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Cliente {
 
     @Id
-    private Integer id;
+    private String idCliente;
     private String nombre;
-    private String apellidos;
+    private String apellido;
     private String ciudad;
+
+    @DBRef
+    private List<Inscripcion> inscripciones;
+
+    @DBRef
+    private List<Visitan> visitas;
+
 }

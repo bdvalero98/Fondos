@@ -1,41 +1,26 @@
 package com.btg.pactual.controllers;
 
-import com.btg.pactual.application.services.ClienteService;
-import com.btg.pactual.domain.models.Cliente;
-import lombok.RequiredArgsConstructor;
+import com.btg.pactual.domain.usecases.GestionInscripcionesUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/clientes")
 public class ClienteController {
 
-    @Autowired
-    private ClienteService clienteService;
+    private final GestionInscripcionesUseCase gestionInscripcionesUseCase;
 
-    @GetMapping
-    public List<Cliente> getAllCLientes() {
-        return clienteService.findAll();
+    public ClienteController(GestionInscripcionesUseCase gestionInscripcionesUseCase) {
+        this.gestionInscripcionesUseCase = gestionInscripcionesUseCase;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Cliente> getClienteById(@PathVariable String id) {
-        return clienteService.findById(id)
-                .map(cliente -> ResponseEntity.ok().body(cliente))
-                .orElse(ResponseEntity.notFound().build());
+    @PostMapping("/{clienteId}/suscribir/{productoId}")
+    public String suscribirCliente(@PathVariable String clienteId, @PathVariable String productoId) {
+        gestionInscripcionesUseCase.suscribirClienteAProducto(clienteId, productoId);
+        return "Cliente suscrito exitosamente";
     }
 
-    @PostMapping
-    public Cliente createCliente(@RequestBody Cliente cliente) {
-        return clienteService.save(cliente);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteCliente(@PathVariable String id) {
-        clienteService.deleteById(id);
-    }
 }

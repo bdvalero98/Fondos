@@ -14,11 +14,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Disponibilidad {
 
     @Id
-    private String id;
-
-    @DBRef
-    private Sucursal sucursal;
+    private String idDisponibilidad;
 
     @DBRef
     private Producto producto;
+
+    @DBRef
+    private Sucursal sucursal;
 }
