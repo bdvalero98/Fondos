@@ -1,26 +1,48 @@
 package com.btg.pactual.controllers;
 
-import com.btg.pactual.domain.usecases.GestionInscripcionesUseCase;
+import com.btg.pactual.application.services.ClienteService;
+import com.btg.pactual.domain.exceptions.ResourceNotFoundException;
+import com.btg.pactual.domain.models.Cliente;
+import com.btg.pactual.domain.models.Inscripcion;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/api/clientes")
 public class ClienteController {
 
-    private final GestionInscripcionesUseCase gestionInscripcionesUseCase;
+    @Autowired
+    private ClienteService clienteService;
 
-    public ClienteController(GestionInscripcionesUseCase gestionInscripcionesUseCase) {
-        this.gestionInscripcionesUseCase = gestionInscripcionesUseCase;
+    @PostMapping
+    public ResponseEntity<Cliente> crearCliente(@RequestBody Cliente cliente) {
+        Cliente nuevoCliente = clienteService.crearCliente(cliente);
+        return ResponseEntity.ok(nuevoCliente);
     }
 
-    @PostMapping("/{clienteId}/suscribir/{productoId}")
-    public String suscribirCliente(@PathVariable String clienteId, @PathVariable String productoId) {
-        gestionInscripcionesUseCase.suscribirClienteAProducto(clienteId, productoId);
-        return "Cliente suscrito exitosamente";
+    @GetMapping("/{id}")
+    public ResponseEntity<Cliente> obtenerCliente(@PathVariable String id) {
+        Cliente cliente = clienteService.obtenerClientePorId(id);
+
+        if (cliente == null) {
+            throw new ResourceNotFoundException("Cliente no encontrado con ID: " + id);
+        }
+
+        return ResponseEntity.ok(cliente);
     }
 
+    @GetMapping
+    public ResponseEntity<List<Cliente>> obtenerTodosLosClientes() {
+        List<Cliente> clientes = clienteService.obtenerClientes();
+        return ResponseEntity.ok(clientes);
+    }
+
+    @GetMapping("/{id}/inscripciones")
+    public ResponseEntity<List<Inscripcion>> obtenerHistorialInscripciones(@PathVariable String id) {
+        List<Inscripcion> inscripciones = clienteService.obtenerHistorialInscripciones(id);
+        return ResponseEntity.ok(inscripciones);
+    }
 }

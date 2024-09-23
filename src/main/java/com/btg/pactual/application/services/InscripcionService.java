@@ -17,7 +17,7 @@ public class InscripcionService {
         return inscripcionRepository.save(inscripcion);
     }
 
-    public void desuscribirLiente(String inscripcionId) {
+    public void desuscribirCliente(String inscripcionId) {
         inscripcionRepository.deleteById(inscripcionId);
     }
 
