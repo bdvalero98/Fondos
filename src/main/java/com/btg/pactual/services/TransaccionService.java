@@ -20,7 +20,7 @@ public class TransaccionService {
     @Autowired
     private ClienteService clienteService;
 
-    public Transaccion registrarTransaccion(Cliente cliente, Producto producto, String tipoTransaccion, Double monto) {
+    public Transaccion registrarTransaccion(Cliente cliente, String tipoTransaccion, Double monto) {
         Transaccion transaccion = new Transaccion();
         transaccion.setCliente(cliente);
         transaccion.setTipoTransaccion(tipoTransaccion);
