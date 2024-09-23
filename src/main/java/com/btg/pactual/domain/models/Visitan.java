@@ -25,5 +25,4 @@ public class Visitan {
     private Sucursal sucursal;
 
     private LocalDate fechaVisita;
-
 }

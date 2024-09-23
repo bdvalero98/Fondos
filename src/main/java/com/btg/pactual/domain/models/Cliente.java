@@ -20,6 +20,7 @@ public class Cliente {
     private String nombre;
     private String apellido;
     private String ciudad;
+    private Double saldo;
 
     @DBRef
     private List<Inscripcion> inscripciones;
