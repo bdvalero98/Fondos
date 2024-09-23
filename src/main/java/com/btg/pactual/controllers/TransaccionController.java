@@ -24,8 +24,8 @@ public class TransaccionController {
     }
 
     @GetMapping("/cliente/{clienteId}")
-    public ResponseEntity<List<Transaccion>> obtenerHistorialPorCliene(@PathVariable String clientedId) {
-        List<Transaccion> transacciones = transaccionService.obtenerHistorialPorCliente(clientedId);
+    public ResponseEntity<List<Transaccion>> obtenerHistorialPorCliene(@PathVariable String clienteId) {
+        List<Transaccion> transacciones = transaccionService.obtenerHistorialPorCliente(clienteId);
         return ResponseEntity.ok(transacciones);
     }
 
