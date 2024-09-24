@@ -1,14 +1,17 @@
 package com.btg.pactual.services;
 
+import com.btg.pactual.domain.exceptions.ClienteNotFoundException;
+import com.btg.pactual.domain.exceptions.TransaccionNotFoundException;
 import com.btg.pactual.domain.models.Cliente;
-import com.btg.pactual.domain.models.Producto;
 import com.btg.pactual.domain.models.Transaccion;
+import com.btg.pactual.repositories.ClienteRepository;
 import com.btg.pactual.repositories.TransaccionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -18,29 +21,45 @@ public class TransaccionService {
     private TransaccionRepository transaccionRepository;
 
     @Autowired
-    private ClienteService clienteService;
+    private ClienteRepository clienteRepository;
 
-    public Transaccion registrarTransaccion(Cliente cliente, Producto producto, String tipoTransaccion, Double monto) {
-        Transaccion transaccion = new Transaccion();
-        transaccion.setCliente(cliente);
-        transaccion.setTipoTransaccion(tipoTransaccion);
-        transaccion.setMonto(monto);
-        transaccion.setFecha(LocalDateTime.now());
-        transaccion.setIdTransaccion(UUID.randomUUID().toString());
-        return transaccionRepository.save(transaccion);
-    }
-
-    public List<Transaccion> obtenerHistorialPorCliente(String clienteId) {
-        Cliente cliente = clienteService.obtenerClientePorId(clienteId);
-        return transaccionRepository.findByCliente(cliente);
-    }
-
-    public List<Transaccion> obtenerTodo() {
+    public List<Transaccion> obtenerTodasLasTransacciones() {
         return transaccionRepository.findAll();
     }
 
-    public List<Transaccion> ObtenerHistorialTransacciones(Cliente cliente) {
-        return transaccionRepository.findByClienteOrderByFechaDesc(cliente);
+    public Transaccion obtenerTransaccionPorId(String idTransaccion) throws TransaccionNotFoundException {
+        Optional<Transaccion> transaccionOptional = transaccionRepository.findById(idTransaccion);
+
+        if (transaccionOptional.isPresent()) {
+            return transaccionOptional.get();
+        } else {
+            throw new TransaccionNotFoundException("Transaccion con ID " + idTransaccion + " no encontrado.");
+        }
     }
 
+    public Transaccion crearTransaccion(Transaccion transaccion) throws ClienteNotFoundException {
+        Cliente cliente = clienteRepository.findById(transaccion.getCliente().getIdCliente())
+                .orElseThrow(() -> new ClienteNotFoundException("Cliente con ID "
+                        + transaccion.getCliente().getIdCliente() + " no encontrado."));
+        transaccion.setIdTransaccion(UUID.randomUUID().toString());
+        transaccion.setFecha(LocalDateTime.now());
+
+        return transaccionRepository.save(transaccion);
+    }
+
+    public Transaccion actualizarTransaccion(String idTransaccion, Transaccion transaccionActualizada)
+            throws ClienteNotFoundException {
+        Transaccion transaccionExistente = obtenerTransaccionPorId(idTransaccion);
+
+        transaccionExistente.setCliente(transaccionActualizada.getCliente());
+        transaccionExistente.setTipoTransaccion(transaccionActualizada.getTipoTransaccion());
+        transaccionExistente.setMonto(transaccionActualizada.getMonto());
+
+        return transaccionRepository.save(transaccionExistente);
+    }
+
+    public void eliminarTransaccion(String idTransaccion) throws TransaccionNotFoundException {
+        Transaccion transaccion = obtenerTransaccionPorId(idTransaccion);
+        transaccionRepository.delete(transaccion);
+    }
 }

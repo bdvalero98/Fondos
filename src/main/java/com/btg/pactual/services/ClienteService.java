@@ -1,5 +1,6 @@
 package com.btg.pactual.services;
 
+import com.btg.pactual.domain.exceptions.ClienteNotFoundException;
 import com.btg.pactual.domain.models.*;
 import com.btg.pactual.repositories.ClienteRepository;
 import com.btg.pactual.repositories.InscripcionRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -23,9 +25,6 @@ public class ClienteService {
     private DisponibilidadService disponibilidadService;
 
     @Autowired
-    private InscripcionService inscripcionService;
-
-    @Autowired
     private TransaccionRepository transaccionRepository;
 
     public Cliente crearCliente(Cliente cliente) {
@@ -34,10 +33,49 @@ public class ClienteService {
     }
 
     public Cliente obtenerClientePorId(String idCliente) {
-        return clienteRepository.findById(idCliente).orElse(null);
+        Optional<Cliente> clienteOptional = clienteRepository.findById(idCliente);
+
+        if (clienteOptional.isPresent()) {
+            return clienteOptional.get();
+        } else {
+            throw new ClienteNotFoundException("Cliente con ID " + idCliente + " no encontrado.");
+        }
     }
 
-    public List<Cliente> obtenerClientes() {
+    public List<Cliente> obtenerTodosLosClientes() {
+        return clienteRepository.findAll();
+    }
+
+    public Cliente actualizarCliente(String idCliente, Cliente clienteActualizado) throws ClienteNotFoundException {
+        Cliente clienteExistente = obtenerClientePorId(idCliente);
+
+        clienteExistente.setNombre(clienteActualizado.getNombre());
+        clienteExistente.setApellido(clienteActualizado.getApellido());
+        clienteExistente.setTelefono(clienteActualizado.getTelefono());
+        clienteExistente.setEmail(clienteActualizado.getEmail());
+        clienteExistente.setCiudad(clienteActualizado.getCiudad());
+        clienteExistente.setSaldo(clienteActualizado.getSaldo());
+        clienteExistente.setInscripciones(clienteActualizado.getInscripciones());
+        clienteExistente.setVisitas(clienteActualizado.getVisitas());
+        clienteExistente.setTransacciones(clienteActualizado.getTransacciones());
+
+        return clienteRepository.save(clienteExistente);
+    }
+
+    public void eliminarCliente(String idCliente) {
+        Cliente clienteExistente = obtenerClientePorId(idCliente);
+        clienteRepository.delete(clienteExistente);
+    }
+
+    public boolean clienteExiste(String idCliente) {
+        return clienteRepository.existsById(idCliente);
+    }
+
+    public List<Cliente> obtenerClientesConInscripciones() {
+        return clienteRepository.findAll();
+    }
+
+    public List<Cliente> obtenerClientesConTransacciones() {
         return clienteRepository.findAll();
     }
 
@@ -52,8 +90,17 @@ public class ClienteService {
         return inscripcionRepository.save(inscripcion);
     }
 
-    public void cancelarInscripcion(String idInscripcion) {
-        inscripcionRepository.deleteById(idInscripcion);
+    public void cancelarInscripcion(String idCliente, String idInscripcion) throws Exception {
+        Cliente cliente = obtenerClientePorId(idCliente);
+
+        boolean inscripcionExiste = cliente.getInscripciones().
+                removeIf(inscripcion -> inscripcion.getIdInscripcion().equals(idInscripcion));
+
+        if (!inscripcionExiste) {
+            throw new Exception("Inscripcion con ID " + idInscripcion + " no encontrada en el cliente.");
+        }
+
+        clienteRepository.save(cliente);
     }
 
     public Inscripcion suscribirClienteAProducto(Cliente cliente, Producto producto, Sucursal sucursal) {
@@ -61,11 +108,6 @@ public class ClienteService {
             return suscribirAFondo(cliente, producto);
         }
         throw new RuntimeException("Producto no disponible en la sucursal seleccionada");
-    }
-
-    public void cancelarInscripcionYRegistrarTransaccion(String idInscripcion, Cliente cliente, Producto producto) {
-        cancelarInscripcion(idInscripcion);
-        registrarTransaccion(cliente, producto, "SALIDA");
     }
 
     private void registrarTransaccion(Cliente cliente, Producto producto, String tipoTransaccion) {
