@@ -37,10 +37,16 @@ public class TransaccionService {
         }
     }
 
-    public Transaccion crearTransaccion(Transaccion transaccion) throws ClienteNotFoundException {
+    public Transaccion crearTransaccion(Transaccion transaccion) throws Exception {
         Cliente cliente = clienteRepository.findById(transaccion.getCliente().getIdCliente())
                 .orElseThrow(() -> new ClienteNotFoundException("Cliente con ID "
                         + transaccion.getCliente().getIdCliente() + " no encontrado."));
+
+        double saldoActual = cliente.getSaldo();
+
+        if (saldoActual < transaccion.getMonto()) {
+            throw new Exception("Saldo insuficiente para realizar la transaccion.");
+        }
         transaccion.setIdTransaccion(UUID.randomUUID().toString());
         transaccion.setFecha(LocalDateTime.now());
 

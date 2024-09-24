@@ -42,8 +42,10 @@ public class TransaccionController {
     public ResponseEntity<Transaccion> crearTransaccion(@RequestBody Transaccion transaccion) {
         try {
             return new ResponseEntity<>(transaccionService.crearTransaccion(transaccion), HttpStatus.CREATED);
-        } catch (ClienteNotFoundException e) {
+        } catch (ClienteNotFoundException clienteNotFoundException) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
