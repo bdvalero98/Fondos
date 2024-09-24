@@ -11,4 +11,6 @@ public interface InscripcionRepository extends MongoRepository<Inscripcion, Stri
     List<Inscripcion> findByClientId(String clienteId);
 
     List<Inscripcion> findActivasPorCliente(String clienteId);
+
+
 }

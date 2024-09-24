@@ -24,6 +24,4 @@ public class Transaccion {
     private String tipoTransaccion;
     private Double monto;
     private LocalDateTime fecha;
-
-
 }

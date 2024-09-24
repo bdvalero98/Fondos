@@ -11,4 +11,6 @@ import java.util.List;
 public interface TransaccionRepository extends MongoRepository<Transaccion, String> {
 
     List<Transaccion> findByCliente(Cliente cliente);
+
+    List<Transaccion> findByClienteOrderByFechaDesc(Cliente cliente);
 }
